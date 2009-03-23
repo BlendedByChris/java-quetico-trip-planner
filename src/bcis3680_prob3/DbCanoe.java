@@ -58,9 +58,8 @@ public class DbCanoe {
                        "FROM Canoe " +
                        "WHERE clCanoe = ?";
         PreparedStatement statement = connection.prepareStatement(query);
-        System.out.println(canoe);
         statement.setString(1, canoe);
-        return statement.executeQuery();    
+        return statement.executeQuery();
     }
 
     /**

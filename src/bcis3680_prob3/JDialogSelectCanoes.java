@@ -20,6 +20,8 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
 
     private TripInformation tripInformation = TripInformation.getInstance();
 
+    private int unassignedGuests = tripInformation.totalGuests;
+
     private int tblCanoeSelectionsRowCount = 0;
     private int canoeSeatCount = 0;
     
@@ -69,18 +71,30 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
      */
     private void setTblCanoeSelections()
     {
-        int unassignedGuests = tripInformation.totalGuests;
-        
-        try {            
+        try {
             ResultSet c = new DbCanoe().getCanoeByCanoe(
                     listCanoeChoices.getSelectedValue().toString());
             c.next();
-            tblCanoeSelections.setValueAt(c.getString("clCanoe"), 0, 0);
-            tblCanoeSelections.setValueAt(c.getString("clManufacturer"), 0, 0 );
-            tblCanoeSelections.setValueAt(c.getString("clLayup"), 0, 0);
-            tblCanoeSelections.setValueAt(c.getString("clWeight"), 0, 0);
-            tblCanoeSelections.setValueAt(c.getString("clCapacity"), 0, 0);
+            String capacity = c.getString("clCapacity");
+            int capacityInt = Integer.parseInt(capacity);
 
+            // Check for unasisgned guests
+            if ((unassignedGuests - capacityInt) >= 0)
+            {
+                unassignedGuests = unassignedGuests - capacityInt;
+                txtUnassignedGuests.setText(Integer.toString(unassignedGuests));
+                tblCanoeSelections.setValueAt(c.getString("clCanoe"),
+                        tblCanoeSelectionsRowCount, 0);
+                tblCanoeSelections.setValueAt(c.getString("clManufacturer"),
+                        tblCanoeSelectionsRowCount, 1);
+                tblCanoeSelections.setValueAt(c.getString("clLayup"),
+                        tblCanoeSelectionsRowCount, 2);
+                tblCanoeSelections.setValueAt(c.getString("clWeight"),
+                        tblCanoeSelectionsRowCount, 3);
+                tblCanoeSelections.setValueAt(capacity,
+                        tblCanoeSelectionsRowCount, 4);
+                tblCanoeSelectionsRowCount++;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -113,7 +127,7 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     private void initComponents() {
 
         grpGroupInformation = new javax.swing.JPanel();
-        txtNotAssigned = new javax.swing.JTextField();
+        txtUnassignedGuests = new javax.swing.JTextField();
         lblNotAssigned = new javax.swing.JLabel();
         txtTotalGuests = new javax.swing.JTextField();
         lblTotalGuests = new javax.swing.JLabel();
@@ -143,16 +157,16 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         grpGroupInformation.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Group Information", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 11))); // NOI18N
         grpGroupInformation.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        txtNotAssigned.setEditable(false);
-        txtNotAssigned.setFont(new java.awt.Font("Arial", 0, 11));
-        grpGroupInformation.add(txtNotAssigned, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 40, -1));
+        txtUnassignedGuests.setEditable(false);
+        txtUnassignedGuests.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        grpGroupInformation.add(txtUnassignedGuests, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 40, -1));
 
         lblNotAssigned.setFont(new java.awt.Font("Arial", 0, 11));
         lblNotAssigned.setText("Not Assigned:");
         grpGroupInformation.add(lblNotAssigned, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, 20));
 
         txtTotalGuests.setEditable(false);
-        txtTotalGuests.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtTotalGuests.setFont(new java.awt.Font("Arial", 0, 11));
         grpGroupInformation.add(txtTotalGuests, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 40, -1));
 
         lblTotalGuests.setFont(new java.awt.Font("Arial", 0, 11));
@@ -277,8 +291,8 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     private javax.swing.JScrollPane scrollCanoeSelections;
     private javax.swing.JTable tblCanoeSelections;
     private javax.swing.JTextField txtGroupLeader;
-    private javax.swing.JTextField txtNotAssigned;
     private javax.swing.JTextField txtTotalGuests;
+    private javax.swing.JTextField txtUnassignedGuests;
     // End of variables declaration//GEN-END:variables
 
 }
