@@ -17,20 +17,77 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
 
     private File tripFile = null;
 
+    private TripInformation tripInformation = TripInformation.getInstance();
+
+    private String [] canoeHeader = tripInformation.canoeHeader;
+    private String [][] canoes = tripInformation.canoes;
+
     /** Creates new form JDialogWriteTrip */
     public JDialogWriteTrip()
     {
         initComponents();
     }
 
-    private void newTripInformationFile(File filename)
+    private void newFile(File filename)
     {
         PrintWriter out = null;
         try {
             out = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
-            out.println("Test:\tchicken.");
+
+            // Write trip information to the file
+            out.print("Group Leader:\t");
+            out.println(tripInformation.groupLeader);
+
+            out.print("Total Guests:\t");
+            out.println(tripInformation.totalGuests);
+
+            out.print("Adults:\t");
+            out.println(tripInformation.adults);
+
+            out.print("Children:\t");
+            out.println(tripInformation.children);
+
+            out.print("Start Date:\t");
+            out.println(tripInformation.startDate);
+
+            out.print("End Date:\t");
+            out.println(tripInformation.endDate);
+
+            out.print("Tow:\t");
+            out.println(tripInformation.tow);
+
+            out.print("Canoe Rental:\t");
+            out.println(tripInformation.canoeRental);
+
+            out.print("Payment Type:\t");
+            out.println(tripInformation.paymentType);
+
+            out.print("Total Duration:\t");
+            out.println(tripInformation.tripDuration);
+
+            out.print("Total Camping Fees:\t");
+            out.println(tripInformation.totalCampingFees);
+
+
+            // Write canoes to the file
+            out.println("\nCanoes:");
+            // Write header
+            for (int i=0; i < canoeHeader.length; i++) {
+                out.print(canoeHeader[i]+"\t");
+            }
+            out.print("\n");
+
+            // Write rows
+            String canoe = "";
+            for (int i=0; i < 10; i++) {
+                for (int j=0; j < 5; j++) {                    
+                    if (canoes[i][j] != null) canoe = canoes[i][j];
+                    else canoe = "";
+                    out.print(canoe+"\t");
+                }
+                out.print("\n");
+            }
             out.close();
-            dispose();
         } catch (IOException ex) {
             Logger.getLogger(JDialogWriteTrip.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
@@ -82,7 +139,8 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
         }
 
         if (evt.getActionCommand().equals("ApproveSelection")) {
-            newTripInformationFile(fcWriteTrip.getSelectedFile());
+            newFile(fcWriteTrip.getSelectedFile());
+            dispose();
         }
     }//GEN-LAST:event_fcWriteTripActionPerformed
 

@@ -9,13 +9,23 @@ public final class TripInformation {
 
     public String groupLeader = "";
     public int totalGuests;
-    public int Adults;
+    public int adults;
+    public int children;
     public String startDate = "";
     public String endDate = "";
     public boolean tow;
     public boolean canoeRental;
     public String paymentType = "";
 
+    public String tripDuration = "";
+    public String totalCampingFees = "";
+
+
+    public String [] canoeHeader = {"Canoe",
+                                    "Manufacturer",
+                                    "Layup",
+                                    "Weight",
+                                    "Capacity"}; 
     public String canoes[][] = new String[10][5];
 
     public boolean updated;

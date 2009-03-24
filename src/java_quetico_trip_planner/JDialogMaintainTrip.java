@@ -13,7 +13,7 @@ import javax.swing.*;
  *
  * @author cleblanc
  */
-public class JDialogSelectTrip extends javax.swing.JDialog {
+public class JDialogMaintainTrip extends javax.swing.JDialog {
 
     // Default simple date instance for converting dates
     private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -29,7 +29,7 @@ public class JDialogSelectTrip extends javax.swing.JDialog {
      * 
      * Creates all of the components for the JFrame dialog.
      */
-    public JDialogSelectTrip() {
+    public JDialogMaintainTrip() {
         initComponents();
         setCustomFrameProperties();
         updateTripInformationFields();
@@ -238,7 +238,8 @@ public class JDialogSelectTrip extends javax.swing.JDialog {
         ti.groupLeader = txtGroupLeader.getText();
         
         ti.totalGuests = Integer.parseInt(txtTotalGuests.getText());
-        ti.Adults = Integer.parseInt(txtAdults.getText());
+        ti.adults = Integer.parseInt(txtAdults.getText());
+        ti.children = ti.totalGuests - ti.adults;
         
         if (radioCash.isSelected())
             ti.paymentType = "Cash";
@@ -254,6 +255,9 @@ public class JDialogSelectTrip extends javax.swing.JDialog {
         ti.tow = checkTow.isSelected();
         ti.canoeRental = checkCanoeRental.isSelected();
 
+        ti.tripDuration = txtTripDuration.getText();
+        ti.totalCampingFees = txtTotalCampingFees.getText();
+
         ti.updated = true;
     }
 
@@ -267,7 +271,7 @@ public class JDialogSelectTrip extends javax.swing.JDialog {
         TripInformation ti = TripInformation.getInstance();
         txtGroupLeader.setText(ti.groupLeader);
         txtTotalGuests.setText(Integer.toString(ti.totalGuests));
-        txtAdults.setText(Integer.toString(ti.Adults));
+        txtAdults.setText(Integer.toString(ti.adults));
 
         if (ti.paymentType.equals("Cash"))
             radioCash.setSelected(true);

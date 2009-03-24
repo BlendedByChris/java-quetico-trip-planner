@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Canoe Selection JFrame
@@ -17,16 +18,22 @@ import javax.swing.DefaultListModel;
 public class JDialogSelectCanoes extends javax.swing.JDialog {
 
     private ResultSet resultSet = null;
-
     private TripInformation tripInformation = TripInformation.getInstance();
 
     private int unassignedGuests = tripInformation.totalGuests;
 
+    private String [] canoeHeader = tripInformation.canoeHeader;
+    private String [][] canoes = tripInformation.canoes;
+
+    private DefaultTableModel tableModel;
+    
     private int tblCanoeSelectionsRowCount = 0;
-    private int canoeSeatCount = 0;
     
     /** Creates new form JDialogSelectCanoes */
     public JDialogSelectCanoes() {
+
+        tableModel = new DefaultTableModel(canoes, canoeHeader);
+
         initComponents();
 
         // Set the result set for use in this dialog instance
@@ -34,13 +41,17 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
             resultSet = new DbCanoe().getAllCanoes();
         } catch (SQLException ex) {
             Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
 
         // Populate the JList of canoe types
-        updateCanoeChoices();
+        try {
+            updateCanoeChoices();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         // Populate group fields
-        updateCanoeChoiceFields();
+        updateTripInformationFields();
     }
 
     /**
@@ -65,57 +76,61 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     }
 
     /**
-     * Set Table Canoe Selections
+     * Select Canoe
      *
      * Sets the canoe selection table row based on the canoe selection list
+     * @throws SQLException
      */
-    private void setTblCanoeSelections()
+    private void selectCanoe() throws SQLException
     {
-        try {
-            ResultSet c = new DbCanoe().getCanoeByCanoe(
-                    listCanoeChoices.getSelectedValue().toString());
-            c.next();
-            String capacity = c.getString("clCapacity");
-            int capacityInt = Integer.parseInt(capacity);
+        ResultSet c = new DbCanoe().getCanoeByCanoe(
+                listCanoeChoices.getSelectedValue().toString());
+        c.next();
+        String capacity = c.getString("clCapacity");
+        int capacityInt = Integer.parseInt(capacity);
 
-            // Check for unasisgned guests
-            if ((unassignedGuests - capacityInt) >= 0)
-            {
-                unassignedGuests = unassignedGuests - capacityInt;
-                txtUnassignedGuests.setText(Integer.toString(unassignedGuests));
-                tblCanoeSelections.setValueAt(c.getString("clCanoe"),
-                        tblCanoeSelectionsRowCount, 0);
-                tblCanoeSelections.setValueAt(c.getString("clManufacturer"),
-                        tblCanoeSelectionsRowCount, 1);
-                tblCanoeSelections.setValueAt(c.getString("clLayup"),
-                        tblCanoeSelectionsRowCount, 2);
-                tblCanoeSelections.setValueAt(c.getString("clWeight"),
-                        tblCanoeSelectionsRowCount, 3);
-                tblCanoeSelections.setValueAt(capacity,
-                        tblCanoeSelectionsRowCount, 4);
-                tblCanoeSelectionsRowCount++;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
+        // Check for unasisgned guests
+        if ((unassignedGuests - capacityInt) >= 0)
+        {
+            unassignedGuests = unassignedGuests - capacityInt;
+            txtUnassignedGuests.setText(Integer.toString(unassignedGuests));
+            tblCanoeSelections.setValueAt(c.getString("clCanoe"),
+                    tblCanoeSelectionsRowCount, 0);
+            tblCanoeSelections.setValueAt(c.getString("clManufacturer"),
+                    tblCanoeSelectionsRowCount, 1);
+            tblCanoeSelections.setValueAt(c.getString("clLayup"),
+                    tblCanoeSelectionsRowCount, 2);
+            tblCanoeSelections.setValueAt(c.getString("clWeight"),
+                    tblCanoeSelectionsRowCount, 3);
+            tblCanoeSelections.setValueAt(capacity,
+                    tblCanoeSelectionsRowCount, 4);
+            tblCanoeSelectionsRowCount++;
         }
     }
 
-    private void updateCanoeChoices()
+    /**
+     * Update Canoe Choices
+     *
+     * Populates the JList of canoe choices
+     * @throws java.sql.SQLException
+     */
+    private void updateCanoeChoices() throws SQLException
     {
-       try {
-            DefaultListModel list = new DefaultListModel();
-            int i = 0;
-            while (resultSet.next()) {
-                list.add(i, resultSet.getString("clCanoe"));
-                i++;
-            }
-            listCanoeChoices.setModel(list);
-        } catch (SQLException ex) {
-            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
+        DefaultListModel list = new DefaultListModel();
+        int i = 0;
+        while (resultSet.next()) {
+            list.add(i, resultSet.getString("clCanoe"));
+            i++;
         }
+        listCanoeChoices.setModel(list);
     }
 
-    private void updateCanoeChoiceFields()
+    /**
+     * Update Trip Information Fields
+     *
+     * Updates the trip information fields
+     */
+    private void updateTripInformationFields()
     {
         txtGroupLeader.setText(tripInformation.groupLeader);
         txtTotalGuests.setText(Integer.toString(tripInformation.totalGuests));
@@ -158,7 +173,7 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         grpGroupInformation.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtUnassignedGuests.setEditable(false);
-        txtUnassignedGuests.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtUnassignedGuests.setFont(new java.awt.Font("Arial", 0, 11));
         grpGroupInformation.add(txtUnassignedGuests, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 40, -1));
 
         lblNotAssigned.setFont(new java.awt.Font("Arial", 0, 11));
@@ -186,31 +201,7 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         grpCanoeSelections.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Canoe Selections", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 11))); // NOI18N
         grpCanoeSelections.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        tblCanoeSelections.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Canoe", "Manufacturer", "Layup", "Weight", "Capacity"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        tblCanoeSelections.setModel(tableModel);
         tblCanoeSelections.getTableHeader().setReorderingAllowed(false);
         scrollCanoeSelections.setViewportView(tblCanoeSelections);
 
@@ -241,7 +232,7 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         buttonChange.setText("Change");
         getContentPane().add(buttonChange, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, 80, -1));
 
-        buttonDelete.setFont(new java.awt.Font("Arial", 0, 11));
+        buttonDelete.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         buttonDelete.setText("Delete");
         getContentPane().add(buttonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 80, -1));
 
@@ -260,18 +251,24 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // Set initial frame properties
         setCustomFrameProperties();
-
-
-
-
-
     }//GEN-LAST:event_formWindowOpened
 
     private void buttonSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelectActionPerformed
-        setTblCanoeSelections();
+        try {
+            selectCanoe();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_buttonSelectActionPerformed
 
     private void buttonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExitActionPerformed
+
+        for (int i=0; i < tableModel.getRowCount(); i++) {
+            for (int j=0; j < tableModel.getColumnCount(); j++) {
+                canoes[i][j] = (String) tableModel.getValueAt(i, j);
+            }
+        }
+        tripInformation.canoes = canoes;
         dispose();
     }//GEN-LAST:event_buttonExitActionPerformed
 
