@@ -32,29 +32,25 @@ public class JFrameSplash extends javax.swing.JFrame {
      */
     private void setCustomFrameProperties()
     {
-        // Disable resizing
-        this.setResizable(false);
-
-        // Set the window size (since NetBeans wont)
+        // Set the window size
         this.setSize(360, 300);
 
         // Center the frame on the screen
         this.setLocationRelativeTo(null);
 
         // Set the custom icon
-        javax.swing.ImageIcon LogoIconImage =
-            new javax.swing.ImageIcon("icon.jpg");
-            java.awt.Image LogoIcon =
-            LogoIconImage.getImage();
-            setIconImage(LogoIcon);
+        javax.swing.ImageIcon LogoIconImage = 
+                new javax.swing.ImageIcon("icon.jpg");
+        java.awt.Image LogoIcon = LogoIconImage.getImage();
+        setIconImage(LogoIcon);
     }
 
     /**
-     * Set Trip Information JFrame Visible
+     * Display Trip Information JFrame
      *
-     * Draws the trip information jframe
+     * Displays the trip information jframe
      */
-    public void setTripInformationJFrameVisbile()
+    public void displayTripInformationJFrame()
     {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -64,11 +60,11 @@ public class JFrameSplash extends javax.swing.JFrame {
     }
 
     /**
-     * Se Canoe Selection JFrame Visible
+     * Display Canoe Selection JFrame
      *
-     * Draws the canoe selection jframe
+     * Displays the canoe selection jframe
      */
-    private void setCanoeSelectionJFrameVisible()
+    private void displayCanoeSelectionJFrame()
     {
         if (isTripInformationUpdated())
             java.awt.EventQueue.invokeLater(new Runnable() {
@@ -99,18 +95,6 @@ public class JFrameSplash extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * Set App Exit
-     *
-     * Exits the application
-     */
-    private void setAppExit()
-    {
-        // Dispose of the JFrame and exit
-        dispose();
-        System.exit(0);
-    }
-
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -135,6 +119,7 @@ public class JFrameSplash extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Quetico Trip Planner");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -232,15 +217,15 @@ public class JFrameSplash extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void menuEnterMaintainActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEnterMaintainActionPerformed
-        setTripInformationJFrameVisbile();
+        displayTripInformationJFrame();
     }//GEN-LAST:event_menuEnterMaintainActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        setCanoeSelectionJFrameVisible();
+        displayCanoeSelectionJFrame();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        setAppExit();
+        System.exit(0);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed

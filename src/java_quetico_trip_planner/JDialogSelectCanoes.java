@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JDialogSelectCanoes extends javax.swing.JDialog {
 
-    private ResultSet resultSet = null;
+    private ResultSet canoesResultSet = null;
     private TripInformation tripInformation = TripInformation.getInstance();
 
     private int unassignedGuests = tripInformation.totalGuests;
@@ -30,28 +30,27 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     private int tblCanoeSelectionsRowCount = 0;
     
     /** Creates new form JDialogSelectCanoes */
-    public JDialogSelectCanoes() {
-
-        tableModel = new DefaultTableModel(canoes, canoeHeader);
-
+    public JDialogSelectCanoes() 
+    {
+        setTableModel();
+        
         initComponents();
-
-        // Set the result set for use in this dialog instance
-        try {
-            resultSet = new DbCanoe().getAllCanoes();
-        } catch (SQLException ex) {
-            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        // Populate the JList of canoe types
-        try {
-            updateCanoeChoices();
-        } catch (SQLException ex) {
-            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        // Populate group fields
+        setCustomFrameProperties();
+        
+        setCanoesResultSet();
+        updateCanoeChoicesList();
         updateTripInformationFields();
+    }
+
+    /**
+     * Set Table Model
+     *
+     * Sets the table model for use in populating the JTable with cano
+     * selections.
+     */
+    private void setTableModel()
+    {
+        tableModel = new DefaultTableModel(canoes, canoeHeader);
     }
 
     /**
@@ -78,51 +77,68 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     /**
      * Select Canoe
      *
-     * Sets the canoe selection table row based on the canoe selection list
-     * @throws SQLException
+     * Sets the canoe selection table row based on the canoe selection list.
      */
-    private void selectCanoe() throws SQLException
+    private void selectCanoe()
     {
-        ResultSet c = new DbCanoe().getCanoeByCanoe(
-                listCanoeChoices.getSelectedValue().toString());
-        c.next();
-        String capacity = c.getString("clCapacity");
-        int capacityInt = Integer.parseInt(capacity);
+        try {
+            // Set the resulset for the specified canoe
+            ResultSet c = new DbCanoe().getCanoeByCanoe(
+                    listCanoeChoices.getSelectedValue().toString());
+            c.next();
 
-        // Check for unasisgned guests
-        if ((unassignedGuests - capacityInt) >= 0)
-        {
-            unassignedGuests = unassignedGuests - capacityInt;
-            txtUnassignedGuests.setText(Integer.toString(unassignedGuests));
-            tblCanoeSelections.setValueAt(c.getString("clCanoe"),
-                    tblCanoeSelectionsRowCount, 0);
-            tblCanoeSelections.setValueAt(c.getString("clManufacturer"),
-                    tblCanoeSelectionsRowCount, 1);
-            tblCanoeSelections.setValueAt(c.getString("clLayup"),
-                    tblCanoeSelectionsRowCount, 2);
-            tblCanoeSelections.setValueAt(c.getString("clWeight"),
-                    tblCanoeSelectionsRowCount, 3);
-            tblCanoeSelections.setValueAt(capacity,
-                    tblCanoeSelectionsRowCount, 4);
-            tblCanoeSelectionsRowCount++;
+            // Set the capacity to use in the if
+            String capacity = c.getString("clCapacity");
+            int capacityInt = Integer.parseInt(capacity);
+            
+            // Check for unassigned guests
+            if ((unassignedGuests - capacityInt) >= 0) {
+                unassignedGuests = unassignedGuests - capacityInt;
+                txtUnassignedGuests.setText(Integer.toString(unassignedGuests));
+                tblCanoeSelections.setValueAt(c.getString("clCanoe"), tblCanoeSelectionsRowCount, 0);
+                tblCanoeSelections.setValueAt(c.getString("clManufacturer"), tblCanoeSelectionsRowCount, 1);
+                tblCanoeSelections.setValueAt(c.getString("clLayup"), tblCanoeSelectionsRowCount, 2);
+                tblCanoeSelections.setValueAt(c.getString("clWeight"), tblCanoeSelectionsRowCount, 3);
+                tblCanoeSelections.setValueAt(capacity, tblCanoeSelectionsRowCount, 4);
+                tblCanoeSelectionsRowCount++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     /**
-     * Update Canoe Choices
+     * Update Canoe Selections Table
      *
-     * Populates the JList of canoe choices
-     * @throws java.sql.SQLException
+     * Populates the JTable of canoe selections.
      */
-    private void updateCanoeChoices() throws SQLException
+    private void setCanoesResultSet()
     {
-        DefaultListModel list = new DefaultListModel();
-        int i = 0;
-        while (resultSet.next()) {
-            list.add(i, resultSet.getString("clCanoe"));
-            i++;
+        try {
+            canoesResultSet = new DbCanoe().getAllCanoes();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
         }
-        listCanoeChoices.setModel(list);
+    }
+
+    /**
+     * Update Canoe Choices List
+     *
+     * Populates the JList of canoe choices.
+     */
+    private void updateCanoeChoicesList()
+    {
+        try {
+            DefaultListModel list = new DefaultListModel();
+            int i = 0;
+            while (canoesResultSet.next()) {
+                list.add(i, canoesResultSet.getString("clCanoe"));
+                i++;
+            }
+            listCanoeChoices.setModel(list);
+        } catch (SQLException ex) {
+            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -162,11 +178,6 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Quetico Canoe Selector");
         setModal(true);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         grpGroupInformation.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Group Information", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 11))); // NOI18N
@@ -232,7 +243,7 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         buttonChange.setText("Change");
         getContentPane().add(buttonChange, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, 80, -1));
 
-        buttonDelete.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        buttonDelete.setFont(new java.awt.Font("Arial", 0, 11));
         buttonDelete.setText("Delete");
         getContentPane().add(buttonDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 80, -1));
 
@@ -248,17 +259,8 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // Set initial frame properties
-        setCustomFrameProperties();
-    }//GEN-LAST:event_formWindowOpened
-
     private void buttonSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelectActionPerformed
-        try {
-            selectCanoe();
-        } catch (SQLException ex) {
-            Logger.getLogger(JDialogSelectCanoes.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        selectCanoe();
     }//GEN-LAST:event_buttonSelectActionPerformed
 
     private void buttonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExitActionPerformed

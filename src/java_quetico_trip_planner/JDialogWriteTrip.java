@@ -28,6 +28,18 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
     public JDialogWriteTrip()
     {
         initComponents();
+        setCustomFrameProperties();
+    }
+
+    /**
+     * Set Custom Frame Properties
+     *
+     * Set any custom frame properties not specified by NetBeans.
+     */
+    private void setCustomFrameProperties()
+    {
+        // Center the frame on the screen
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -78,7 +90,6 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
             out.print("Total Camping Fees:\t");
             out.println(tripInformation.totalCampingFees);
 
-
             // Write canoes to the file
             out.println("\nCanoes:");
             // Write header
@@ -120,6 +131,7 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
         fcWriteTrip.setDialogTitle("Write Trip Information");
         fcWriteTrip.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
         fcWriteTrip.setFileFilter(new FilterJDialogWriteTrip());
+        fcWriteTrip.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         fcWriteTrip.setSelectedFile(new File("C:\\" + tripInformation.groupLeader + "_" + tripInformation.startDate.replace("/", "-") + ".xls"));
             fcWriteTrip.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -149,7 +161,6 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
 
     private void fcWriteTripActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fcWriteTripActionPerformed
         if (evt.getActionCommand().equals("CancelSelection")) {
-            System.out.println("Cancel buttion selected");
             dispose();
         }
 

@@ -48,6 +48,9 @@
         <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new FilterJDialogWriteTrip()" type="code"/>
         </Property>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="11" style="0"/>
+        </Property>
         <Property name="selectedFile" type="java.io.File" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="new File(&quot;C:\\&quot; + tripInformation.groupLeader + &quot;_&quot; + tripInformation.startDate.replace(&quot;/&quot;, &quot;-&quot;) + &quot;.xls&quot;)" type="code"/>
         </Property>
