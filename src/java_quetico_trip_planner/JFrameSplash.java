@@ -149,13 +149,8 @@ public class JFrameSplash extends javax.swing.JFrame {
         jMenu1.setFont(new java.awt.Font("Arial", 0, 11));
         jMenu1.setLabel("Trip Information");
 
-        jMenuItem3.setFont(new java.awt.Font("Arial", 0, 11));
+        jMenuItem3.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jMenuItem3.setText("Retrieve");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
         jMenu1.add(jMenuItem3);
 
         menuEnterMaintain.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_MASK));
@@ -168,7 +163,7 @@ public class JFrameSplash extends javax.swing.JFrame {
         });
         jMenu1.add(menuEnterMaintain);
 
-        jMenuItem5.setFont(new java.awt.Font("Arial", 0, 11));
+        jMenuItem5.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
         jMenuItem5.setText("Write");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,14 +258,6 @@ public class JFrameSplash extends javax.swing.JFrame {
             }
         });
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JDialogRetrieveTrip().setVisible(true);
-            }
-        });
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         if (isTripInformationUpdated())
