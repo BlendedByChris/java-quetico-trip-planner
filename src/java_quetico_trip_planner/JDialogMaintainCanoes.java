@@ -20,13 +20,13 @@ import java.sql.ResultSet;
  */
 public class JDialogMaintainCanoes extends javax.swing.JDialog {
 
-    private ResultSet resultSet = null;
+    private ResultSet tripInformation = null;
 
     /** Creates new form JDialogMaintainCanoes */
     public JDialogMaintainCanoes() {
         initComponents();
         try {
-            resultSet = new DbCanoe().getAllCanoes();
+            tripInformation = new DbCanoe().getAllCanoes();
         } catch (SQLException ex) {
             Logger.getLogger(JDialogMaintainCanoes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -36,16 +36,16 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
     /**
      * Update Record Information Fields
      *
-     * Sets the JFrame fields to the current selected record from the resultSet
+     * Sets the JFrame fields to the current selected record from the tripInformation
      */
     private void updateRecordInformationFields()
     {
         try {
-            txtCanoe.setText(resultSet.getString("clCanoe"));
-            txtManufacturer.setText(resultSet.getString("clManufacturer"));
-            txtLayup.setText(resultSet.getString("clLayup"));
-            txtWeight.setText(resultSet.getString("clWeight"));
-            txtCapacity.setText(resultSet.getString("clCapacity"));
+            txtCanoe.setText(tripInformation.getString("clCanoe"));
+            txtManufacturer.setText(tripInformation.getString("clManufacturer"));
+            txtLayup.setText(tripInformation.getString("clLayup"));
+            txtWeight.setText(tripInformation.getString("clWeight"));
+            txtCapacity.setText(tripInformation.getString("clCapacity"));
         } catch (SQLException ex) {
             Logger.getLogger(JDialogMaintainCanoes.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -62,7 +62,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
     {
         System.out.println("new record");
         try {
-            resultSet.moveToInsertRow();
+            tripInformation.moveToInsertRow();
             destroyAllFieldText();
             txtCanoe.setEditable(true);
             btnAddRecord.setEnabled(false);
@@ -84,18 +84,18 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
      */
     private void updateRecord(boolean newRecord) throws SQLException
     {
-        resultSet.updateString("clCanoe", txtCanoe.getText());
-        resultSet.updateString("clManufacturer", txtManufacturer.getText());
-        resultSet.updateString("clLayup", txtLayup.getText());
-        resultSet.updateString("clWeight", txtWeight.getText());
-        resultSet.updateString("clCapacity", txtCapacity.getText());
+        tripInformation.updateString("clCanoe", txtCanoe.getText());
+        tripInformation.updateString("clManufacturer", txtManufacturer.getText());
+        tripInformation.updateString("clLayup", txtLayup.getText());
+        tripInformation.updateString("clWeight", txtWeight.getText());
+        tripInformation.updateString("clCapacity", txtCapacity.getText());
 
         if (newRecord) {
-            resultSet.insertRow();
-            resultSet.last();
+            tripInformation.insertRow();
+            tripInformation.last();
             updateRecordInformationFields();
         } else {
-            resultSet.updateRow();
+            tripInformation.updateRow();
         }
     }
 
@@ -328,12 +328,12 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
             // Check if the table is empty
-            if (!resultSet.next()) {
+            if (!tripInformation.next()) {
                 newRecord(); // Add a new row
             } else {
-                resultSet.first();
+                tripInformation.first();
                 btnPrevRecord.setEnabled(false);
-                if (!resultSet.isLast()) btnNextRecord.setEnabled(true);
+                if (!tripInformation.isLast()) btnNextRecord.setEnabled(true);
                 updateRecordInformationFields();
             }                        
         } catch (SQLException ex) {
@@ -343,9 +343,9 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
 
     private void btnNextRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextRecordActionPerformed
         try {
-            resultSet.next();
-            if (resultSet.isLast()) btnNextRecord.setEnabled(false);
-            if (!resultSet.isFirst()) btnPrevRecord.setEnabled(true);
+            tripInformation.next();
+            if (tripInformation.isLast()) btnNextRecord.setEnabled(false);
+            if (!tripInformation.isFirst()) btnPrevRecord.setEnabled(true);
             updateRecordInformationFields();
         } catch (SQLException ex) {
             Logger.getLogger(JDialogMaintainCanoes.class.getName()).log(Level.SEVERE, null, ex);
@@ -354,9 +354,9 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
 
     private void btnPrevRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrevRecordActionPerformed
         try {
-            resultSet.previous();
-            if (resultSet.isFirst()) btnPrevRecord.setEnabled(false);
-            if (!resultSet.isLast()) btnNextRecord.setEnabled(true);
+            tripInformation.previous();
+            if (tripInformation.isFirst()) btnPrevRecord.setEnabled(false);
+            if (!tripInformation.isLast()) btnNextRecord.setEnabled(true);
             updateRecordInformationFields();
         } catch (SQLException ex) {
             Logger.getLogger(JDialogMaintainCanoes.class.getName()).log(Level.SEVERE, null, ex);
@@ -366,14 +366,14 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
     private void btnDeleteRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteRecordActionPerformed
         try {
             // Check if this is the only record left in the table
-            if (resultSet.isLast() && resultSet.isFirst()) {
-                resultSet.deleteRow();
+            if (tripInformation.isLast() && tripInformation.isFirst()) {
+                tripInformation.deleteRow();
                 newRecord();
             } else {
-                resultSet.deleteRow();
-                resultSet.first();
+                tripInformation.deleteRow();
+                tripInformation.first();
                 btnPrevRecord.setEnabled(false); // Disable <<
-                if (resultSet.isLast())
+                if (tripInformation.isLast())
                     btnNextRecord.setEnabled(false);
                 else
                     btnNextRecord.setEnabled(true);
@@ -393,7 +393,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
                 updateRecord(true);
                 btnAddRecord.setEnabled(true);
                 txtCanoe.setEditable(false);
-                if (!resultSet.isFirst())
+                if (!tripInformation.isFirst())
                     btnPrevRecord.setEnabled(true);
                 btnDeleteRecord.setEnabled(true);
             }

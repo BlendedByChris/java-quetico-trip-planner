@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
  */
 public class JFrameSplash extends javax.swing.JFrame {
 
+    private TripInformation tripInformation = TripInformation.getInstance();
+
     /**
      * Splash JFrame
      *
@@ -68,20 +70,33 @@ public class JFrameSplash extends javax.swing.JFrame {
      */
     private void setCanoeSelectionJFrameVisible()
     {
-        TripInformation ti = TripInformation.getInstance();
-        if (ti.updated) {
+        if (isTripInformationUpdated())
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
                    new JDialogSelectCanoes().setVisible(true);
                 }
             });
+
+    }
+
+    /**
+     * Is Trip Information Updated
+     *
+     * Returns whether the trip information dialog has been changed.
+     * 
+     * @return boolean
+     */
+    private boolean isTripInformationUpdated()
+    {
+        if (tripInformation.updated) {
+            return true;
         } else {
             JOptionPane.showMessageDialog(null,
                     "Please update your trip information first!",
                     "Update trip information first!",
                     JOptionPane.ERROR_MESSAGE);
+            return false;
         }
-
     }
 
     /**
@@ -258,11 +273,12 @@ public class JFrameSplash extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JDialogWriteTrip().setVisible(true);
-            }
-        });
+        if (isTripInformationUpdated())
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new JDialogWriteTrip().setVisible(true);
+                }
+            });
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
