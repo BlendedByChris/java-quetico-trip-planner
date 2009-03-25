@@ -264,7 +264,6 @@ public class JDialogSelectCanoes extends javax.swing.JDialog {
     }//GEN-LAST:event_buttonSelectActionPerformed
 
     private void buttonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExitActionPerformed
-
         for (int i=0; i < tableModel.getRowCount(); i++) {
             for (int j=0; j < tableModel.getColumnCount(); j++) {
                 canoes[i][j] = (String) tableModel.getValueAt(i, j);
