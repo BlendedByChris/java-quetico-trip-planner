@@ -287,7 +287,8 @@ public class JDialogMaintainTrip extends javax.swing.JDialog {
         if (ti.tow) checkTow.setSelected(true);
         if (ti.canoeRental) checkCanoeRental.setSelected(true);
 
-        if (ti.updated = true)
+
+        if (ti.updated == true)
             destroyErrorLabels();
     }
 

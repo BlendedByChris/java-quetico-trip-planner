@@ -1,7 +1,10 @@
 package java_quetico_trip_planner;
 
 /**
+ * Trip Information
  *
+ * A singlton class for storing trip information through this application.
+ * 
  * @author cleblanc
  */
 public final class TripInformation {
@@ -16,7 +19,6 @@ public final class TripInformation {
     public boolean tow;
     public boolean canoeRental;
     public String paymentType = "";
-
     public String tripDuration = "";
     public String totalCampingFees = "";
 
@@ -28,10 +30,15 @@ public final class TripInformation {
                                     "Capacity"}; 
     public String canoes[][] = new String[10][5];
 
-    public boolean updated;
+    public boolean updated = false;
 
     private TripInformation(){ }
 
+    /**
+     * Get Instance
+     *
+     * @return instance
+     */
     public static TripInformation getInstance()
     {
         if (instance == null)

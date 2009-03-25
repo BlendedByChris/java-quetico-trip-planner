@@ -7,15 +7,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 
 /**
+ * JDialog Write Trip
+ *
+ * Shows a file chooser dialog for the user to select where they would like
+ * to store the trip information summary. This file by default is stored in
+ * C:\LeaderName_TripDate.xls. It is a tab delimited file.
  *
  * @author cleblanc
  */
 public class JDialogWriteTrip extends javax.swing.JDialog {
-
-    private File tripFile = null;
 
     private TripInformation tripInformation = TripInformation.getInstance();
 
@@ -28,7 +30,15 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
         initComponents();
     }
 
-    private void newFile(File filename)
+    /**
+     * Write File
+     *
+     * Write a new file to a specified location with detauls from the
+     * TripInformation singleton class.
+     *
+     * @param filename
+     */
+    private void writeFile(File filename)
     {
         PrintWriter out = null;
         try {
@@ -87,6 +97,8 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
                 }
                 out.print("\n");
             }
+
+            // Closes the file
             out.close();
         } catch (IOException ex) {
             Logger.getLogger(JDialogWriteTrip.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,32 +117,35 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setModal(true);
 
+        fcWriteTrip.setDialogTitle("Write Trip Information");
         fcWriteTrip.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
-        fcWriteTrip.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fcWriteTripActionPerformed(evt);
-            }
-        });
+        fcWriteTrip.setFileFilter(new FilterJDialogWriteTrip());
+        fcWriteTrip.setSelectedFile(new File("C:\\" + tripInformation.groupLeader + "_" + tripInformation.startDate.replace("/", "-") + ".xls"));
+            fcWriteTrip.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    fcWriteTripActionPerformed(evt);
+                }
+            });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(fcWriteTrip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(fcWriteTrip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+            javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+            getContentPane().setLayout(layout);
+            layout.setHorizontalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(fcWriteTrip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
+            layout.setVerticalGroup(
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(fcWriteTrip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            );
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+            pack();
+        }// </editor-fold>//GEN-END:initComponents
 
     private void fcWriteTripActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fcWriteTripActionPerformed
         if (evt.getActionCommand().equals("CancelSelection")) {
@@ -139,22 +154,10 @@ public class JDialogWriteTrip extends javax.swing.JDialog {
         }
 
         if (evt.getActionCommand().equals("ApproveSelection")) {
-            newFile(fcWriteTrip.getSelectedFile());
+            writeFile(fcWriteTrip.getSelectedFile());
             dispose();
         }
     }//GEN-LAST:event_fcWriteTripActionPerformed
-
-    /**
-    * @param args the command line arguments
-    */
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JDialogWriteTrip().setVisible(true);
-            }
-        });
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fcWriteTrip;
     // End of variables declaration//GEN-END:variables

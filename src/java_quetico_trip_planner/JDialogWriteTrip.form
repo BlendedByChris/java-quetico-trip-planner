@@ -43,7 +43,14 @@
   <SubComponents>
     <Component class="javax.swing.JFileChooser" name="fcWriteTrip">
       <Properties>
+        <Property name="dialogTitle" type="java.lang.String" value="Write Trip Information"/>
         <Property name="dialogType" type="int" value="1"/>
+        <Property name="fileFilter" type="javax.swing.filechooser.FileFilter" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new FilterJDialogWriteTrip()" type="code"/>
+        </Property>
+        <Property name="selectedFile" type="java.io.File" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new File(&quot;C:\\&quot; + tripInformation.groupLeader + &quot;_&quot; + tripInformation.startDate.replace(&quot;/&quot;, &quot;-&quot;) + &quot;.xls&quot;)" type="code"/>
+        </Property>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fcWriteTripActionPerformed"/>

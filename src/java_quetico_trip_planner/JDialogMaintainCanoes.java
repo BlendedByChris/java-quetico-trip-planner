@@ -131,6 +131,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
         btnExit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Maintain Canoes");
         setModal(true);
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -142,31 +143,31 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Record Information", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 0, 11))); // NOI18N
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 11));
         jLabel1.setText("Canoe:");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 11));
         jLabel2.setText("Manufacturer:");
 
-        jLabel3.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 11));
         jLabel3.setText("Layup:");
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Arial", 0, 11));
         jLabel4.setText("Weight:");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial", 0, 11));
         jLabel5.setText("Capacity:");
 
         txtCanoe.setEditable(false);
-        txtCanoe.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtCanoe.setFont(new java.awt.Font("Arial", 0, 11));
 
-        txtManufacturer.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtManufacturer.setFont(new java.awt.Font("Arial", 0, 11));
 
-        txtLayup.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtLayup.setFont(new java.awt.Font("Arial", 0, 11));
 
-        txtWeight.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtWeight.setFont(new java.awt.Font("Arial", 0, 11));
 
-        txtCapacity.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        txtCapacity.setFont(new java.awt.Font("Arial", 0, 11));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -214,7 +215,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnAddRecord.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnAddRecord.setFont(new java.awt.Font("Arial", 0, 11));
         btnAddRecord.setText("Add");
         btnAddRecord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -222,7 +223,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
             }
         });
 
-        btnUpdateRecord.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnUpdateRecord.setFont(new java.awt.Font("Arial", 0, 11));
         btnUpdateRecord.setText("Update");
         btnUpdateRecord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -230,7 +231,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
             }
         });
 
-        btnDeleteRecord.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnDeleteRecord.setFont(new java.awt.Font("Arial", 0, 11));
         btnDeleteRecord.setText("Delete");
         btnDeleteRecord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -238,7 +239,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
             }
         });
 
-        btnPrevRecord.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnPrevRecord.setFont(new java.awt.Font("Arial", 0, 11));
         btnPrevRecord.setText("<<");
         btnPrevRecord.setEnabled(false);
         btnPrevRecord.addActionListener(new java.awt.event.ActionListener() {
@@ -247,7 +248,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
             }
         });
 
-        btnNextRecord.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnNextRecord.setFont(new java.awt.Font("Arial", 0, 11));
         btnNextRecord.setText(">>");
         btnNextRecord.setEnabled(false);
         btnNextRecord.addActionListener(new java.awt.event.ActionListener() {
@@ -256,7 +257,7 @@ public class JDialogMaintainCanoes extends javax.swing.JDialog {
             }
         });
 
-        btnExit.setFont(new java.awt.Font("Arial", 0, 11)); // NOI18N
+        btnExit.setFont(new java.awt.Font("Arial", 0, 11));
         btnExit.setText("Exit");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
